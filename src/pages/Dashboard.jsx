@@ -1,3 +1,5 @@
+import StatusBadge from "@/components/StatusBadge";
+import useOrderStore from "@/store/orderStore";
 import {
   ShoppingCart,
   Clock,
@@ -7,31 +9,44 @@ import {
 
 import { Card, CardContent } from "@/components/ui/card";
 
+
+export default function Dashboard(){
+
+const orders = useOrderStore(
+  (state) => state.orders
+);
+
 const stats = [
   {
     title:"Total Orders",
-    value:"128",
+    value: orders.length,
     icon:ShoppingCart
   },
+
   {
     title:"Pending Prints",
-    value:"24",
+    value: orders.filter(
+      order => order.status === "Waiting"
+    ).length,
     icon:Clock
   },
+
   {
     title:"In Production",
-    value:"15",
+    value: orders.filter(
+      order => order.status === "Printing"
+    ).length,
     icon:Factory
   },
+
   {
     title:"Completed",
-    value:"89",
+    value: orders.filter(
+      order => order.status === "Completed"
+    ).length,
     icon:CheckCircle
   }
 ];
-
-
-export default function Dashboard(){
 
 return (
 
@@ -44,7 +59,6 @@ mb-6
 ">
 PrintFlow Pro Dashboard
 </h1>
-
 
 {/* STAT CARDS */}
 
@@ -67,8 +81,10 @@ return(
 className="
 p-5
 flex
+flex-col
 items-center
-justify-between
+text-center
+gap-1
 "
 >
 
@@ -84,9 +100,7 @@ justify-between
 
 </div>
 
-
 <Icon size={40}/>
-
 
 </CardContent>
 
@@ -116,12 +130,8 @@ mb-4
 ">
 Production Queue
 </h2>
-
-
 <table className="w-full">
-
 <thead>
-
 <tr className="border-b">
 
 <th className="text-left p-3">
@@ -143,56 +153,29 @@ Status
 
 <tbody>
 
-<tr className="border-b">
+{
+orders.map((order)=>(
+  <tr
+    key={order.id}
+    className="border-b"
+  >
 
-<td className="p-3">
-#1024
-</td>
+    <td className="p-3 text-left">
+      {order.id}
+    </td>
 
-<td>
-Custom T-Shirt
-</td>
+    <td className="p-3 text-left">
+      {order.product}
+    </td>
 
-<td>
-Printing
-</td>
+    <td className="p-3 text-left">
+      <StatusBadge status={order.status}/>
+    </td>
 
-</tr>
+  </tr>
+))
 
-
-<tr className="border-b">
-
-<td className="p-3">
-#1025
-</td>
-
-<td>
-Team Jersey
-</td>
-
-<td>
-Waiting
-</td>
-
-</tr>
-
-
-<tr>
-
-<td className="p-3">
-#1026
-</td>
-
-<td>
-Company Uniform
-</td>
-
-<td>
-Completed
-</td>
-
-</tr>
-
+}
 
 </tbody>
 

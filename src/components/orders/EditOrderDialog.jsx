@@ -97,11 +97,7 @@ export default function EditOrderDialog({
 
   };
 
-
-
   if(!order) return null;
-
-
 
   return (
 
@@ -110,9 +106,7 @@ export default function EditOrderDialog({
       onOpenChange={onOpenChange}
     >
 
-
       <DialogContent className="sm:max-w-2xl">
-
 
         <DialogHeader>
 
@@ -122,10 +116,7 @@ export default function EditOrderDialog({
 
         </DialogHeader>
 
-
-
         <div className="grid gap-4 py-4">
-
 
           <div className="grid gap-2">
 
@@ -141,8 +132,6 @@ export default function EditOrderDialog({
 
           </div>
 
-
-
           <div className="grid gap-2">
 
             <Label>
@@ -157,10 +146,7 @@ export default function EditOrderDialog({
 
           </div>
 
-
-
           <div className="grid grid-cols-2 gap-4">
-
 
             <div className="grid gap-2">
 
@@ -175,8 +161,6 @@ export default function EditOrderDialog({
               />
 
             </div>
-
-
 
             <div className="grid gap-2">
 
@@ -193,17 +177,13 @@ export default function EditOrderDialog({
 
             </div>
 
-
           </div>
-
-
 
           <div className="grid gap-2">
 
             <Label>
               Print Method
             </Label>
-
 
             <Select
 
@@ -224,7 +204,6 @@ export default function EditOrderDialog({
 
               </SelectTrigger>
 
-
               <SelectContent>
 
                 <SelectItem value="Sublimation">
@@ -243,16 +222,11 @@ export default function EditOrderDialog({
                   Screen Printing
                 </SelectItem>
 
-
               </SelectContent>
-
 
             </Select>
 
-
           </div>
-
-
 
           <div className="grid gap-2">
 
@@ -272,11 +246,7 @@ export default function EditOrderDialog({
 
           </div>
 
-
-
         </div>
-
-
 
         <DialogFooter>
 
@@ -286,20 +256,15 @@ export default function EditOrderDialog({
 
           </DialogClose>
 
-
           <Button onClick={handleSave}>
 
             Save Changes
 
           </Button>
 
-
         </DialogFooter>
 
-
-
       </DialogContent>
-
 
     </Dialog>
 

@@ -1,3 +1,6 @@
+import StatusBadge from "@/components/StatusBadge";
+import { Input } from "@/components/ui/input";
+import DeleteOrderDialog from "@/components/orders/DeleteOrderDialog";
 import { useState } from "react";
 import OrderDetailsDialog from "@/components/orders/OrderDetailsDialog";
 import EditOrderDialog from "@/components/orders/EditOrderDialog";
@@ -15,24 +18,67 @@ import useOrderStore from "@/store/orderStore";
 
 export default function OrderTable() {
 
-  const orders = useOrderStore(
-    (state) => state.orders
-  );
+const orders = useOrderStore((state) => state.orders);
+const updateStatus = useOrderStore(
+      (state) => state.updateStatus);
 
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [showDetails, setShowDetails] = useState(false);
+const [search, setSearch] = useState("");
+const [statusFilter, setStatusFilter] = useState("All");
 
-  const [editOrder, setEditOrder] = useState(null);
-  const [showEdit, setShowEdit] = useState(false);
+const [selectedOrder, setSelectedOrder] = useState(null);
+const [showDetails, setShowDetails] = useState(false);
+
+const [editOrder, setEditOrder] = useState(null);
+const [showEdit, setShowEdit] = useState(false);
+
+const [deleteOrder, setDeleteOrder] = useState(null);
+const [showDelete, setShowDelete] = useState(false);
+
+const filteredOrders = orders.filter((order) => {
+
+const keyword = search.toLowerCase();
+
+const matchesSearch =
+    (order.id || "").toLowerCase().includes(keyword) ||
+    (order.customer || "").toLowerCase().includes(keyword) ||
+    (order.product || "").toLowerCase().includes(keyword) ||
+    (order.method || "").toLowerCase().includes(keyword);
+
+const matchesStatus = statusFilter === "All" ||
+    order.status === statusFilter;
+
+  return matchesSearch && matchesStatus;
+
+});
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
 
 
-      <h2 className="text-xl font-bold mb-5">
-        Orders Management
-      </h2>
+     <div className="flex justify-between items-center mb-5">
 
+        <h2 className="text-xl font-bold">
+          Orders Management
+        </h2>
+
+        <Input
+          className="w-72"
+          placeholder="🔍 Search orders..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border rounded-md px-3 py-2"
+        >
+          <option value="All">All Status</option>
+          <option value="Waiting">Waiting</option>
+          <option value="Printing">Printing</option>
+          <option value="Completed">Completed</option>
+        </select>
+
+      </div>
 
       <table className="w-full">
 
@@ -64,7 +110,7 @@ export default function OrderTable() {
               Status
             </th>
 
-            <th className="text-left p-3">
+            <th className="text-left w-16">
               Action
             </th>
 
@@ -72,12 +118,10 @@ export default function OrderTable() {
 
         </thead>
 
-
         <tbody>
 
-
         {
-          orders.map((order)=>(
+          filteredOrders.map((order) => (
 
             <tr
               key={order.id}
@@ -88,29 +132,24 @@ export default function OrderTable() {
                 {order.id}
               </td>
 
-
               <td className="p-3">
                 {order.customer}
               </td>
-
 
               <td className="p-3">
                 {order.product}
               </td>
 
-
               <td className="p-3">
                 {order.quantity}
               </td>
-
 
               <td className="p-3">
                 {order.method}
               </td>
 
-
               <td  className="p-3">
-                  {order.status}
+                  <StatusBadge status={order.status} />
               </td>
 
               <td className="p-3">
@@ -120,7 +159,6 @@ export default function OrderTable() {
                 <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
                   <MoreVertical size={18}/>
                 </DropdownMenuTrigger>
-
 
                 <DropdownMenuContent>
 
@@ -142,53 +180,49 @@ export default function OrderTable() {
                     Edit Order
                 </DropdownMenuItem>
 
-
-                <DropdownMenuItem>
-                  Change Status
+                <DropdownMenuItem
+                  onClick={() =>
+                    updateStatus(order.id, "Waiting")
+                  }
+                >
+                  Set Waiting
                 </DropdownMenuItem>
 
-
-                <DropdownMenuItem className="text-red-500">
-                  Delete
+                <DropdownMenuItem
+                  onClick={() =>
+                    updateStatus(order.id, "Printing")
+                  }
+                >
+                  Set Printing
                 </DropdownMenuItem>
 
+                <DropdownMenuItem
+                  onClick={() =>
+                    updateStatus(order.id, "Completed")
+                  }
+                >
+                  Set Completed
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                    className="text-red-500"
+                    onClick={() => {
+                      setDeleteOrder(order);
+                      setShowDelete(true);
+                    }}
+                  >
+                    Delete
+                </DropdownMenuItem>
 
                 </DropdownMenuContent>
 
                 </DropdownMenu>
 
-                </td>
-
-            <span
-            className={`
-            px-3
-            py-1
-            rounded-full
-            text-sm
-
-            ${
-            order.status === "Completed"
-            ? "bg-green-100 text-green-700"
-
-            : order.status === "Printing"
-            ? "bg-blue-100 text-blue-700"
-
-            : "bg-yellow-100 text-yellow-700"
-
-            }
-            `}
-            >
-            {order.status}
-            </span>
+            </td>
             </tr>
-
           ))
         }
-
-
-        </tbody>
-
-
+</tbody>
       </table>
 
       <OrderDetailsDialog
@@ -202,6 +236,13 @@ export default function OrderTable() {
           order={editOrder}
 
         />
+
+        <DeleteOrderDialog
+          open={showDelete}
+          onOpenChange={setShowDelete}
+          order={deleteOrder}
+        />
+
     </div>
   );
 }

@@ -32,3 +32,8 @@
 - Quantity display bug
 - Base UI dialog errors
 - Table layout cleanup
+
+08 03 2026
+CHANGELOG.md
+
+Document everything completed today.
