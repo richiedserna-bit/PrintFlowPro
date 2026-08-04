@@ -58,3 +58,18 @@
 - Prompt Generator
 - Mockup Generator
 - Design Generator
+
+
+08 04 2026
+Production Workflow
+
+Order lifecycle:
+
+Waiting
+→ Design Approval
+→ Printing
+→ Quality Check
+→ Completed
+
+Purpose:
+Provide clear visibility of order progress from receiving until completion.
