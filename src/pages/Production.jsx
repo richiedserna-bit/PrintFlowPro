@@ -1,3 +1,4 @@
+import PriorityBadge from "@/components/PriorityBadge";
 import useOrderStore from "@/store/orderStore";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/StatusBadge";
@@ -128,32 +129,77 @@ order.status === column.status
 key={order.id}
 className="
 bg-white
-rounded-lg
+rounded-xl
 shadow
 p-4
 mb-3
+border
+hover:shadow-md
+transition
 "
 >
 
-<p className="font-bold">
+<div className="
+flex
+justify-between
+items-center
+mb-3
+">
+
+<p className="
+font-bold
+text-lg
+text-slate-800
+">
 {order.id}
 </p>
 
-<p>
+<div className="
+flex
+gap-2
+items-center
+">
+
+<StatusBadge status={order.status}/>
+
+<PriorityBadge priority={order.priority}/>
+
+</div>
+
+</div>
+
+<p className="
+font-semibold
+text-slate-700
+">
 {order.product}
 </p>
 
-<p>
-Qty: {order.quantity}
+<p className="text-sm text-gray-600">
+Customer: {order.customer}
 </p>
 
-<StatusBadge status={order.status}/>
+<p className="text-sm text-gray-600">
+Quantity: {order.quantity} pcs
+</p>
+
+<p className="text-sm text-gray-600">
+Method: {order.method}
+</p>
+
+<p>
+📅 Deadline: {order.deadline}
+</p>
+
+<p>
+📝 Notes: {order.notes}
+</p>
 
 {
 column.status !== "Completed" && (
 
 <Button
-className="mt-3 w-full"
+className="mt-4 w-full"
 onClick={()=>moveOrder(order)}
 >
 Move Next

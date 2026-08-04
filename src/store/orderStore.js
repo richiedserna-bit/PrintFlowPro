@@ -17,8 +17,12 @@ product:"Custom T-Shirt",
 quantity:20,
 method:"Sublimation",
 status:"Printing",
-price:110
+price:110,
+priority:"High",
+deadline:"2026-08-10",
+notes:"Front print only"
 },
+
 
 {
 id:"#1025",
@@ -27,8 +31,12 @@ product:"Company Uniform",
 quantity:50,
 method:"DTF",
 status:"Waiting",
-price:250
+price:250,
+priority:"Normal",
+deadline:"2026-08-15",
+notes:"Company logo on chest"
 },
+
 
 {
 id:"#1026",
@@ -37,7 +45,10 @@ product:"Team Jersey",
 quantity:15,
 method:"Screen Print",
 status:"Quality Check",
-price:150
+price:150,
+priority:"Low",
+deadline:"2026-08-20",
+notes:"Check color accuracy"
 }
 
 ];
