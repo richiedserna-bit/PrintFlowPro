@@ -95,11 +95,17 @@ const handleSave = () => {
   id:`#${Date.now()}`,
   customer:order.customer,
   product:order.product,
-  qty:order.quantity,
+  quantity:order.quantity,
   method:order.method,
   deadline: order.deadline,
   notes: order.notes,
   status:"Waiting",
+  priority:"Normal",
+  history:[{
+  status:"Waiting",
+  date: new Date().toLocaleString(),
+  }
+  ]
 });
 
   toast.success("Order Saved Successfully!", {

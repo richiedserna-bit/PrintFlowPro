@@ -1,4 +1,9 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+const createHistory = (status)=>[
+{ status, date:new Date().toLocaleString() }
+];
 
 const orderStatuses = [
   "Waiting",
@@ -20,7 +25,8 @@ status:"Printing",
 price:110,
 priority:"High",
 deadline:"2026-08-10",
-notes:"Front print only"
+notes:"Front print only",
+history:createHistory("Printing")
 },
 
 
@@ -34,7 +40,8 @@ status:"Waiting",
 price:250,
 priority:"Normal",
 deadline:"2026-08-15",
-notes:"Company logo on chest"
+notes:"Company logo on chest",
+history:createHistory("Waiting")
 },
 
 
@@ -48,12 +55,13 @@ status:"Quality Check",
 price:150,
 priority:"Low",
 deadline:"2026-08-20",
-notes:"Check color accuracy"
+notes:"Check color accuracy",
+history:createHistory("Quality Check")
 }
 
 ];
 
-const useOrderStore = create((set)=>({
+const useOrderStore = create( persist((set) => ({
 
 orders: initialOrders,
 
@@ -92,16 +100,45 @@ orders: state.orders.filter((order) => order.id !== id),
 
 updateStatus:(id,status)=>
 set((state)=>({
+
 orders:state.orders.map(order =>
+
 order.id === id
-? { ...order, status }
-: order
+
+?
+
+{
+...order,
+
+status,
+
+history:[
+...order.history,
+
+{
+status,
+date:new Date().toLocaleString()
+}
+
+]
+
+}
+
+:order
 
 )
 
 }))
 
-}));
+}),
+
+{
+name:"printflow-orders"
+}
+
+)
+
+);
 
 export {
   orderStatuses

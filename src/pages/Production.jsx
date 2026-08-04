@@ -1,3 +1,8 @@
+import {useState} from "react";
+
+import ProductionDetailsDialog 
+from "@/components/production/ProductionDetailsDialog";
+
 import PriorityBadge from "@/components/PriorityBadge";
 import useOrderStore from "@/store/orderStore";
 import { Button } from "@/components/ui/button";
@@ -39,6 +44,10 @@ color:"text-gray-700"
 ];
 
 export default function Production(){
+
+const [selectedOrder,setSelectedOrder]=useState(null);
+
+const [open,setOpen]=useState(false);
 
 const orders = useOrderStore(
 (state)=>state.orders
@@ -127,6 +136,11 @@ order.status === column.status
 
 <div
 key={order.id}
+onClick={()=>{
+setSelectedOrder(order);
+setOpen(true);
+}}
+
 className="
 bg-white
 rounded-xl
@@ -136,6 +150,7 @@ mb-3
 border
 hover:shadow-md
 transition
+cursor-pointer
 "
 >
 
@@ -152,6 +167,7 @@ text-lg
 text-slate-800
 ">
 {order.id}
+<StatusBadge status={order.status}/>
 </p>
 
 <div className="
@@ -160,32 +176,44 @@ gap-2
 items-center
 ">
 
-<StatusBadge status={order.status}/>
-
 <PriorityBadge priority={order.priority}/>
 
 </div>
 
 </div>
 
+{/* PRODUCT */}
+
 <p className="
 font-semibold
 text-slate-700
+mb-3
 ">
 {order.product}
 </p>
 
-<p className="text-sm text-gray-600">
-Customer: {order.customer}
-</p>
 
-<p className="text-sm text-gray-600">
-Quantity: {order.quantity} pcs
-</p>
+{/* QUICK INFO */}
 
-<p className="text-sm text-gray-600">
-Method: {order.method}
-</p>
+<div className="
+flex
+justify-between
+items-center
+text-sm
+mb-3
+">
+
+<span className="
+text-gray-600
+">
+📦 {order.quantity} pcs
+</span>
+
+<PriorityBadge
+priority={order.priority}
+/>
+
+</div>
 
 <p>
 📅 Deadline: {order.deadline}
@@ -199,8 +227,14 @@ Method: {order.method}
 column.status !== "Completed" && (
 
 <Button
-className="mt-4 w-full"
-onClick={()=>moveOrder(order)}
+className="
+mt-4
+w-full
+"
+onClick={(e)=>{
+e.stopPropagation();
+moveOrder(order);
+}}
 >
 Move Next
 </Button>
@@ -208,6 +242,22 @@ Move Next
 )
 
 }
+<ProductionDetailsDialog
+
+order={selectedOrder}
+
+open={open}
+
+setOpen={(value)=>{
+setOpen(value);
+
+if(!value){
+setSelectedOrder(null);
+}
+
+}}
+
+/>
 
 </div>
 
