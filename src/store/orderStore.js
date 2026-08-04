@@ -1,5 +1,12 @@
 import { create } from "zustand";
 
+const orderStatuses = [
+  "Waiting",
+  "Printing",
+  "Quality Check",
+  "Ready for Pickup",
+  "Completed"
+];
 
 const initialOrders = [
 
@@ -29,7 +36,7 @@ customer:"Maria Santos",
 product:"Team Jersey",
 quantity:15,
 method:"Screen Print",
-status:"Completed",
+status:"Quality Check",
 price:150
 }
 
@@ -85,5 +92,8 @@ order.id === id
 
 }));
 
+export {
+  orderStatuses
+};
 
 export default useOrderStore;

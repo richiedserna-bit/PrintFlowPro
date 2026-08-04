@@ -1,3 +1,11 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import StatusBadge from "@/components/StatusBadge";
 import { Input } from "@/components/ui/input";
 import DeleteOrderDialog from "@/components/orders/DeleteOrderDialog";
@@ -36,15 +44,16 @@ const [showDelete, setShowDelete] = useState(false);
 
 const filteredOrders = orders.filter((order) => {
 
-const keyword = search.toLowerCase();
+  const keyword = search.toLowerCase();
 
-const matchesSearch =
+  const matchesSearch =
     (order.id || "").toLowerCase().includes(keyword) ||
     (order.customer || "").toLowerCase().includes(keyword) ||
     (order.product || "").toLowerCase().includes(keyword) ||
     (order.method || "").toLowerCase().includes(keyword);
 
-const matchesStatus = statusFilter === "All" ||
+  const matchesStatus =
+    statusFilter === "All" ||
     order.status === statusFilter;
 
   return matchesSearch && matchesStatus;
@@ -54,31 +63,42 @@ const matchesStatus = statusFilter === "All" ||
   return (
     <div className="bg-white rounded-xl shadow p-6">
 
-
      <div className="flex justify-between items-center mb-5">
 
-        <h2 className="text-xl font-bold">
-          Orders Management
-        </h2>
+  <h2 className="text-xl font-bold">
+    Orders Management
+  </h2>
 
-        <Input
-          className="w-72"
-          placeholder="🔍 Search orders..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded-md px-3 py-2"
-        >
-          <option value="All">All Status</option>
-          <option value="Waiting">Waiting</option>
-          <option value="Printing">Printing</option>
-          <option value="Completed">Completed</option>
-        </select>
+  <div className="flex gap-3">
 
-      </div>
+    <Input
+      className="w-72"
+      placeholder="Search orders..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+    />
+
+    <Select
+      value={statusFilter}
+      onValueChange={setStatusFilter}
+    >
+      <SelectTrigger className="w-44">
+        <SelectValue />
+      </SelectTrigger>
+
+      <SelectContent>
+        <SelectItem value="All">All</SelectItem>
+        <SelectItem value="Waiting">Waiting</SelectItem>
+        <SelectItem value="Printing">Printing</SelectItem>
+        <SelectItem value="Completed">Completed</SelectItem>
+        <SelectItem value="Released">Released</SelectItem>
+      </SelectContent>
+
+    </Select>
+
+  </div>
+
+</div>
 
       <table className="w-full">
 
