@@ -133,7 +133,7 @@ date:new Date().toLocaleString()
 }),
 
 {
-name:"printflow-orders"
+name:"printflow-orders-v2"
 }
 
 )

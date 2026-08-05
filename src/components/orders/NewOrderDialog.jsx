@@ -1,3 +1,4 @@
+import { ORDER_STATUS } from "@/constants/orderStatus";
 import { toast } from "sonner";
 import useOrderStore from "@/store/orderStore";
 
@@ -99,10 +100,10 @@ const handleSave = () => {
   method:order.method,
   deadline: order.deadline,
   notes: order.notes,
-  status:"Waiting",
+  status:"ORDER_STATUS[0]",
   priority:"Normal",
   history:[{
-  status:"Waiting",
+  
   date: new Date().toLocaleString(),
   }
   ]

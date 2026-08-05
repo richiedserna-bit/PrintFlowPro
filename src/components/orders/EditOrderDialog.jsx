@@ -39,7 +39,7 @@ export default function EditOrderDialog({
     customer:"",
     contact:"",
     product:"",
-    qty:"",
+    quantity:"",
     method:"",
     deadline:"",
     notes:"",
@@ -56,7 +56,7 @@ export default function EditOrderDialog({
         customer: order.customer || "",
         contact: order.contact || "",
         product: order.product || "",
-        qty: order.qty || "",
+        quantity: order.quantity || "",
         method: order.method || "",
         deadline: order.deadline || "",
         notes: order.notes || "",
@@ -88,7 +88,7 @@ export default function EditOrderDialog({
       order.id,
       {
         ...formData,
-        qty:Number(formData.qty)
+        quantity:Number(formData.qty)
       }
     );
 

@@ -8,40 +8,7 @@ import useOrderStore from "@/store/orderStore";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/StatusBadge";
 
-
-const columns = [
-
-{
-title:"Waiting",
-status:"Waiting",
-color:"text-yellow-700"
-},
-
-{
-title:"Printing",
-status:"Printing",
-color:"text-blue-700"
-},
-
-{
-title:"Quality Check",
-status:"Quality Check",
-color:"text-purple-700"
-},
-
-{
-title:"Ready for Pickup",
-status:"Ready for Pickup",
-color:"text-green-700"
-},
-
-{
-title:"Completed",
-status:"Completed",
-color:"text-gray-700"
-}
-
-];
+import { ORDER_STATUS } from "@/constants/orderStatus";
 
 export default function Production(){
 
@@ -57,25 +24,21 @@ const updateStatus = useOrderStore(
 (state)=>state.updateStatus
 );
 
+const columns = ORDER_STATUS;
+
 const moveOrder = (order)=>{
 
-const flow = {
+const currentIndex = ORDER_STATUS.findIndex(
+(item)=>item.status === order.status
+);
 
-"Waiting":"Printing",
+const nextStatus = ORDER_STATUS[currentIndex + 1];
 
-"Printing":"Quality Check",
-
-"Quality Check":"Ready for Pickup",
-
-"Ready for Pickup":"Completed"
-
-};
-
-if(flow[order.status]){
+if(nextStatus){
 
 updateStatus(
 order.id,
-flow[order.status]
+nextStatus.status
 );
 
 }
@@ -137,6 +100,7 @@ order.status === column.status
 <div
 key={order.id}
 onClick={()=>{
+
 setSelectedOrder(order);
 setOpen(true);
 }}
@@ -276,5 +240,4 @@ setSelectedOrder(null);
 </div>
 
 )
-
 }
